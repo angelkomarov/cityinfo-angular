@@ -1,0 +1,20 @@
+<!--!!AK5.1  -->
+<form  (ngSubmit)="onSubmit()">
+    <div class="form">
+        <h4>{{mode$}}</h4>
+        <hr />
+        <div class="form-group">
+            <label for="name" class="col-md-2">Name</label>
+            <input class="col-md-5" id="name" name="name" placeholder="Enter Point Of Interest name" [(ngModel)]="po$.name">
+        </div>
+        <div class="form-group">
+            <label for="desc" class="col-md-2" style="float:left;margin-right:5px;">Desctiption</label>
+            <textarea ref-textarea id="desc" class="col-md-5" rows="3" placeholder="Enter Point Of Interest description" [(ngModel)]="po$.description"  name="first"></textarea>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+  </form>
