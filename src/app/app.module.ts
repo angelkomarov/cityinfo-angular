@@ -12,8 +12,8 @@ import { PointsOfInterestListComponent } from './points-of-interest-list/points-
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'; //bootstrap has been added
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PointOfInterestComponent } from './point-of-interest/point-of-interest.component';
-import { FormsModule } from '@angular/forms';
-import { InfoToastComponent } from './toasts/info-toast/info-toast.component'; //!!AK5 import angular forms
+import { FormsModule } from '@angular/forms'; //!!AK5 import angular forms
+import { InfoToastComponent } from './toasts/info-toast/info-toast.component'; 
 
 @NgModule({
   declarations: [ //!!AK0.2 component classes

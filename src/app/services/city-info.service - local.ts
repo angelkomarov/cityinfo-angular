@@ -16,17 +16,17 @@ export class CityInfoService {
   constructor(private http: HttpClient) { }
 
   getCities() : Observable<City[]> {
-     return this.http.get<City[]>('https://cityinfoapi2.azurewebsites.net/api/cities/async')
+     return this.http.get<City[]>('https://localhost:44313/api/cities/async')
      .pipe(map(result => result));
   }
 
   getPointsOfInterest() : Observable<City[]> {
-    return this.http.get<City[]>('https://cityinfoapi2.azurewebsites.net/api/cities/async/pointsofinterest')
+    return this.http.get<City[]>('https://localhost:44313/api/cities/async/pointsofinterest')
     .pipe(map(result => result));
   }
   
   getPointOfInterest(cityId: number, poId: number) : Observable<PointOfInterest> {
-    return this.http.get<PointOfInterest>('https://cityinfoapi2.azurewebsites.net/api/cities/async/'
+    return this.http.get<PointOfInterest>('https://localhost:44313/api/cities/async/'
     + cityId + '/pointsofinterest/' + poId).pipe(map(result => {
       console.log("Service.getPointOfInterest: ", result);
       return result
@@ -35,7 +35,7 @@ export class CityInfoService {
 
   createPointOfInterest(cityId: number, po: PointOfInterest) : Observable<any> {
     let body = JSON.stringify(po);
-    return this.http.post<any>('https://cityinfoapi2.azurewebsites.net/api/cities/async/'
+    return this.http.post<any>('https://localhost:44313/api/cities/async/'
     + cityId + '/pointsofinterest/', po).pipe(map(result => { 
       console.log("service.createPointOfInterest: ", result) 
       return result
@@ -44,7 +44,7 @@ export class CityInfoService {
   
   updatePointOfInterest(cityId: number, po: PointOfInterest) : Observable<any> {
     let body = JSON.stringify(po);
-    return this.http.put<any>('https://cityinfoapi2.azurewebsites.net/api/cities/async/'
+    return this.http.put<any>('https://localhost:44313/api/cities/async/'
     + cityId + '/pointsofinterest/' + po.id, po).pipe(map(result => { 
       console.log("service.updatePointOfInterest: ", result) 
       return result
@@ -52,7 +52,7 @@ export class CityInfoService {
   }  
 
   deletePointOfInterest(cityId: number,  poId: number) : Observable<any> {
-    return this.http.delete<any>('https://cityinfoapi2.azurewebsites.net/api/cities/async/'
+    return this.http.delete<any>('https://localhost:44313/api/cities/async/'
     + cityId + '/pointsofinterest/' + poId).pipe(map(result => { 
       console.log("service.deletePointOfInterest: ", result) 
       return result
