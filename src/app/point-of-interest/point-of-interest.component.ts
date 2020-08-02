@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PointOfInterest } from '../models/point-of-interest.model';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { CityInfoService } from '../services/city-info.service';
 import { AppToastService } from '../services/app-toast.service';
 import { ErrrorHandler } from '../utility/errror-handler';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-point-of-interest',
@@ -19,6 +20,7 @@ export class PointOfInterestComponent implements OnInit {
   mode$: string;
   po$: PointOfInterest;
   errrorHandler: ErrrorHandler  =  new ErrrorHandler(); 
+  notifier$ = new Subject();
   
   //!!AK4.3.1 inject route - to receive point of interest from route
   constructor(private route: ActivatedRoute, private router: Router, private cityInfoSvc: CityInfoService,
@@ -34,7 +36,8 @@ export class PointOfInterestComponent implements OnInit {
     this.po$ = {} as PointOfInterest;
     if (this.cityId$ && this.poId$) { //edit
       this.mode$ = "Edit";
-      this.cityInfoSvc.getPointOfInterest(this.cityId$, this.poId$).subscribe(
+      this.cityInfoSvc.getPointOfInterest(this.cityId$, this.poId$).pipe(takeUntil(this.notifier$))
+      .subscribe(
         data => { this.po$ = data},
         err => {
           console.log("Get PO error:", err);
@@ -52,7 +55,8 @@ export class PointOfInterestComponent implements OnInit {
 
   onSubmit() {
     if (this.po$.id) { //edit
-      this.cityInfoSvc.updatePointOfInterest(this.cityId$, this.po$).subscribe(
+      this.cityInfoSvc.updatePointOfInterest(this.cityId$, this.po$).pipe(takeUntil(this.notifier$))
+      .subscribe(
         result => { 
           console.log("update PO " , result);
           this.toastService.showSuccess( "Success", 'Point Of Interest has been updated');
@@ -67,7 +71,8 @@ export class PointOfInterestComponent implements OnInit {
       );
     }
     else { //new record
-      this.cityInfoSvc.createPointOfInterest(this.cityId$, this.po$).subscribe(
+      this.cityInfoSvc.createPointOfInterest(this.cityId$, this.po$).pipe(takeUntil(this.notifier$))
+      .subscribe(
         result => { 
           console.log("insert PO " , result);
           this.toastService.showSuccess( "Success", 'Point Of Interest has been created');
@@ -83,7 +88,10 @@ export class PointOfInterestComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.poEvtSubs$.unsubscribe(); //Cleanup subscribtion
+    //Cleanup subscribtions
+    this.poEvtSubs$.unsubscribe(); 
+    this.notifier$.next()
+    this.notifier$.complete()
   }
 
 }

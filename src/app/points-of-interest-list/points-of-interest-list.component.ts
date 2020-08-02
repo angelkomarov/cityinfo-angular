@@ -7,9 +7,10 @@ import { Router } from '@angular/router';
 //!!AK6.import 3 modal routines 
 import { NgbModal, ModalDismissReasons, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { PointOfInterest } from '../models/point-of-interest.model';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { AppToastService } from '../services/app-toast.service';
 import { ErrrorHandler } from '../utility/errror-handler';
+import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 
 
 @Component({
@@ -18,7 +19,6 @@ import { ErrrorHandler } from '../utility/errror-handler';
   styleUrls: ['./points-of-interest-list.component.scss']
 })
 export class PointsOfInterestListComponent implements OnInit {
-
   cities$: City[];
   faTrashAlt = faTrashAlt;
   faPlus = faPlus;
@@ -28,6 +28,7 @@ export class PointsOfInterestListComponent implements OnInit {
   modalRef: NgbModalRef;
   closeResult: string;
   errrorHandler: ErrrorHandler  =  new ErrrorHandler(); 
+  notifier$ = new Subject();  
 
   //!!AK4.2.1 inject router - to use routing
   constructor(private cityInfoSvc: CityInfoService, private router: Router, private modalService: NgbModal, 
@@ -51,7 +52,8 @@ export class PointsOfInterestListComponent implements OnInit {
       this.closeResult = `Modal Closed with: ${result}`;  
       console.log(this.closeResult);
       //call the service
-      this.cityInfoSvc.deletePointOfInterest(this.delCityid, this.delPo.id).subscribe(
+      this.cityInfoSvc.deletePointOfInterest(this.delCityid, this.delPo.id).pipe(takeUntil(this.notifier$))
+      .subscribe(
         result => { 
           console.log("delete PO " , result);
           //!!AK7.4 call toast service
@@ -81,7 +83,8 @@ export class PointsOfInterestListComponent implements OnInit {
   }
 
   private loadPointsOfInterest() {
-    this.cityInfoSvc.getPointsOfInterest().subscribe(
+    this.cityInfoSvc.getPointsOfInterest().pipe(takeUntil(this.notifier$))
+    .subscribe(
       data => { this.cities$ = data},
             err => {
               console.log("Getting poins of interest  error:", err);

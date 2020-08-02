@@ -15,6 +15,7 @@ import { PointOfInterestComponent } from './point-of-interest/point-of-interest.
 import { FormsModule } from '@angular/forms'; //!!AK5 import angular forms
 import { InfoToastComponent } from './toasts/info-toast/info-toast.component'; 
 
+
 @NgModule({
   declarations: [ //!!AK0.2 component classes
     AppComponent,
@@ -24,15 +25,15 @@ import { InfoToastComponent } from './toasts/info-toast/info-toast.component';
     PointOfInterestComponent,
     InfoToastComponent
   ],
-  imports: [
+  imports: [ //!!AK0.3 add another modules into this module (e.g. Angular modules)
     BrowserModule,
-    FormsModule,  //!!AK5 import ref angular forms
+    FormsModule,  //!!AK5 import module ref angular forms
     AppRoutingModule,
-    NgbModule, //bootstrap has been added
-    HttpClientModule,  //!!AK3.1.1 Add imporrted Ref to HttpClient
+    NgbModule, //bootstrap module has been added
+    HttpClientModule,  //!!AK3.1.1 Add imporrted Ref to HttpClient module
     FontAwesomeModule,
   ],
-  providers: [], //!!AK0.3 services
-  bootstrap: [AppComponent] //!!AK0.4 module statrup component
+  providers: [], //!!AK0.4 services
+  bootstrap: [AppComponent] //!!AK0.5 module statrup component
 })
 export class AppModule { }
